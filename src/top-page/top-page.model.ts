@@ -34,7 +34,7 @@ export class TopPageAdvantage {
 
 export class TopPageModel extends TimeStamps {
   @prop({ enum: TopLevelCategory })
-  firstLevelCategory: TopLevelCategory;
+  firstCategory: TopLevelCategory;
 
   @prop()
   secondCategory: string;
@@ -52,7 +52,7 @@ export class TopPageModel extends TimeStamps {
   vacancies: VacanciesData;
 
   @prop({ type: () => [TopPageAdvantage] })
-  advantages: TopPageAdvantage;
+  advantages: TopPageAdvantage[];
 
   @prop()
   seoText: string;
