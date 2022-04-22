@@ -1,6 +1,6 @@
 version: '3'
 services:
-  top.api:
+  owl.api:
     image: owl-api:latest
     container_name: owl-api
     restart: always

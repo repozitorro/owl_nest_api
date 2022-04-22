@@ -4,7 +4,6 @@ import { ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { ProductModel } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
-import { ReviewModel } from '../review/review.model';
 
 @Injectable()
 export class ProductService {
@@ -70,10 +69,6 @@ export class ProductService {
           },
         },
       ])
-      .exec() as ProductModel & {
-      review: ReviewModel[];
-      reviewCount: number;
-      reviewAvg: number;
-    };
+      .exec();
   }
 }
