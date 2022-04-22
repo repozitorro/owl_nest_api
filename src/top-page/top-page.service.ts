@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { TopLevelCategory, TopPageModel } from './top-page.model';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class TopPageService {
   constructor(
-    @InjectModel(TopPageModel)
+    @InjectModel('TopPage')
     private readonly topPageModel: ReturnModelType<typeof TopPageModel>,
   ) {}
 

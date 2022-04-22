@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { ProductModel } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(ProductModel)
+    @InjectModel('Product')
     private readonly productModel: ReturnModelType<typeof ProductModel>,
   ) {}
 

@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ReviewModel } from './review.model';
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { InjectModel } from 'nestjs-typegoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectModel(ReviewModel)
+    @InjectModel('Review')
     private readonly reviewModel: ReturnModelType<typeof ReviewModel>,
   ) {}
 
