@@ -1,23 +1,23 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
-import { ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { UserModel } from './user.model';
+import { User } from './user.schema';
 import { compare, genSalt, hash } from 'bcrypt';
 import { USER_NOT_FOUND_ERROR, WRONG_PASSWORD_ERROR } from './auth.constants';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel('User')
-    private readonly userModel: ReturnModelType<typeof UserModel>,
+    @InjectModel(User.name)
+    private readonly userSchema: Model<User>,
     private readonly jwtService: JwtService,
   ) {}
 
   async createUser(dto: AuthDto) {
     const salt = await genSalt(10);
-    const newUser = new this.userModel({
+    const newUser = new this.userSchema({
       email: dto.login,
       passwordHash: await hash(dto.password, salt),
     });
@@ -25,13 +25,13 @@ export class AuthService {
   }
 
   async findUser(email: string) {
-    return this.userModel.findOne({ email }).exec();
+    return this.userSchema.findOne({ email }).exec();
   }
 
   async validateUser(
     email: string,
     password: string,
-  ): Promise<Pick<UserModel, 'email'>> {
+  ): Promise<Pick<User, 'email'>> {
     const user = await this.findUser(email);
 
     if (!user) {

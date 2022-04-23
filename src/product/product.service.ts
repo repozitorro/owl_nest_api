@@ -1,35 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { ProductModel } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Product } from './product.schema';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel('Product')
-    private readonly productModel: ReturnModelType<typeof ProductModel>,
+    @InjectModel(Product.name)
+    private readonly productSchema: Model<Product>,
   ) {}
 
   async create(dto: CreateProductDto) {
-    return this.productModel.create(dto);
+    return this.productSchema.create(dto);
   }
 
   async findById(id: string) {
-    return this.productModel.findById(id).exec();
+    return this.productSchema.findById(id).exec();
   }
 
   async deleteById(id: string) {
-    return this.productModel.findByIdAndDelete(id).exec();
+    return this.productSchema.findByIdAndDelete(id).exec();
   }
 
   async updateById(id: string, dto: CreateProductDto) {
-    return this.productModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    return this.productSchema.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
   async findWithReviews(dto: FindProductDto) {
-    return this.productModel
+    return this.productSchema
       .aggregate([
         {
           $match: {

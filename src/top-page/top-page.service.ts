@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { TopLevelCategory, TopPageModel } from './top-page.model';
+import { TopLevelCategory, TopPage } from './top-page.schema';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class TopPageService {
   constructor(
-    @InjectModel('TopPage')
-    private readonly topPageModel: ReturnModelType<typeof TopPageModel>,
+    @InjectModel(TopPage.name)
+    private readonly topPageSchema: Model<TopPage>,
   ) {}
 
   async create(dto: CreateTopPageDto) {
-    return this.topPageModel.create(dto);
+    return this.topPageSchema.create(dto);
   }
 
   async findById(id: string) {
-    return this.topPageModel.findById(id).exec();
+    return this.topPageSchema.findById(id).exec();
   }
 
   async findByAlias(alias: string) {
-    return this.topPageModel.findOne({ alias }).exec();
+    return this.topPageSchema.findOne({ alias }).exec();
   }
 
   async findByCategory(firstCategory: TopLevelCategory) {
-    return this.topPageModel
+    return this.topPageSchema
       .aggregate()
       .match({
         firstCategory,
@@ -37,16 +37,16 @@ export class TopPageService {
   }
 
   async findByText(text: string) {
-    return this.topPageModel
+    return this.topPageSchema
       .find({ $text: { $search: text, $caseSensitive: false } })
       .exec();
   }
 
   async delete(id: string) {
-    return this.topPageModel.findByIdAndRemove(id).exec();
+    return this.topPageSchema.findByIdAndRemove(id).exec();
   }
 
   async updateById(id: string, dto: CreateTopPageDto) {
-    return this.topPageModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    return this.topPageSchema.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 }

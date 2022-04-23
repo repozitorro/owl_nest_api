@@ -4,8 +4,8 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { mongoose } from '@typegoose/typegoose';
 import { ID_VALIDATION_ERROR } from './id-validation.constants';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class IdValidationPipe implements PipeTransform {
